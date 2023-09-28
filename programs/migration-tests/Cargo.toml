@@ -16,4 +16,4 @@ cpi = ["no-entrypoint"]
 default = []
 
 [dependencies]
-anchor-lang = { path = "../../../anchor-migration/lang" }
+anchor-lang = { path = "../../../based-anchor/lang" }

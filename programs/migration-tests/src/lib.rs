@@ -2,8 +2,6 @@ use anchor_lang::prelude::*;
 
 declare_id!("AkKZAdS6NjcJGAtuWDaZAACXgNBnAgrw4U9hcNewe9Xh");
 
-mod account_struct;
-
 #[program]
 pub mod migration_tests {
     use super::*;
@@ -102,13 +100,9 @@ impl Space for TypeA {
 
 impl Migrate<TypeB> for TypeA {
     fn migrate(&self) -> TypeB {
-        let mut data = self.data.clone();
-        data.extend_from_slice(&data.clone());
-        msg!("Len: {}", data.len());
-
         TypeB {
             bump: self.bump,
-            data
+            data: vec![0x0b; 64]
         }
     }
 }
@@ -123,7 +117,7 @@ impl Migrate<TypeA> for TypeB {
     fn migrate(&self) -> TypeA {
         TypeA {
             bump: self.bump,
-            data: self.data[0..32].to_vec()
+            data: vec![0x0a;32]
         }
     }
 }
@@ -140,13 +134,9 @@ pub struct TypeC {
 
 impl Migrate<TypeC> for TypeB {
     fn migrate(&self) -> TypeC {
-        let mut data = self.data.to_vec();
-        data.extend_from_slice(&self.data.clone());
-        data.extend_from_slice(&self.data.clone());
-        data.extend_from_slice(&self.data.clone());
         TypeC {
             bump: self.bump,
-            data
+            data: vec![0x0c;256]
         }
     }
 }
